@@ -1,9 +1,17 @@
 spring:
   application:
-    name: slaugh
+    name: sluagh
   jpa:
     hibernate:
       ddl-auto: validate
   flyway:
     locations: classpath:db/migration
     baseline-on-migrate: true
+    schemas: sluagh
+    defaut-schema: sluagh
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/sluagh
+          jwk-set-uri: http://keycloak:8080/realms/sluagh/protocol/openid-connect/certs

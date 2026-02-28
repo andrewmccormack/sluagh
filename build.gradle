@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '4.0.3'
 	id 'io.spring.dependency-management' version '1.1.7'
+    id 'com.diffplug.spotless' version '8.2.1'
 }
 
 group = 'com'
@@ -30,6 +31,8 @@ ext {
 
 dependencies {
     implementation 'org.springframework.modulith:spring-modulith-starter-core'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 	compileOnly 'org.projectlombok:lombok'
     implementation 'org.flywaydb:flyway-core'
     implementation 'org.flywaydb:flyway-database-postgresql'
@@ -46,6 +49,26 @@ dependencyManagement {
     imports {
         mavenBom "org.springframework.modulith:spring-modulith-bom:${springModulithVersion}"
     }
+}
+
+spotless {
+    java {
+        // Use Google Java Format (or palantirJavaFormat(), eclipse(), etc.)
+        googleJavaFormat()
+
+        // Remove unused imports
+        removeUnusedImports()
+
+        // Trim trailing whitespace
+        trimTrailingWhitespace()
+
+        // Ensure files end with a newline
+        endWithNewline()
+    }
+}
+
+tasks.named('bootRun') {
+    dependsOn 'spotlessApply'
 }
 
 tasks.named('test') {
